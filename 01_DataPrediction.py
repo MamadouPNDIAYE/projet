@@ -1,7 +1,6 @@
 import streamlit as st 
 import pandas as pd
 import numpy as np
-
 st.title("🌨️Data prediction⛅")
 # Voyons comment sont les données aprés encodage
 df= pd.read_csv('weather.csv')
@@ -62,13 +61,6 @@ st.sidebar.success('1 🌨️🌨️🌨️')
 st.sidebar.success('0 ⛅⛅⛅')
 st.sidebar.write('Made with 💗 by  ☎️ Contact',url)
 st.sidebar.info('GOMYCODE SN')
-
-#from xgboost import XGBClassifier
-#bst = XGBClassifier(n_estimators=2, max_depth=2, learning_rate=1, objective='binary:logistic')
-#bst.fit(X_train,y_train)
-#pred_xgb = bst.predict(X_test)
-#st.sidebar.write('Accuracy:', np.round(accuracy_score(y_test,pred_xgb),3)*100,'%')
-
 # Fonction input user
 def user_input(MinTemp,MaxTemp,Rainfall,Evaporation,Sunshine,WindGustSpeed,WindSpeed9am,WindSpeed3pm,Humidity9am,Humidity3pm,Pressure9am,Pressure3pm,Cloud9am,Cloud3pm,Temp9am,Temp3pm,RainToday):
     data = np.array([
@@ -121,4 +113,3 @@ def main():
             st.write("🤖",reponse)   
 if __name__ == "__main__":
     main()
-
