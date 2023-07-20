@@ -43,12 +43,25 @@ model = SVC()
 model.fit(X_train, y_train)
 previsor_svc = model.predict(X_test)
 
+# les sidebar qui sont dans le Home page  
+url="nmamadousow@gmail.com"
+with st.sidebar:
+    st.info('Data analysis and visualisation')
+    st.markdown(''' 
+    📧 [Openwather](<https://openweathermap.org/>)
+    
+    📧 [Météo Sénégal](<https://www.meteoart.com/africa/senegal?page=day#date=2023-07-18>)
+    
+    💻 [Code source](<nmamadousow@gmail.com>)
+                ''')
 st.sidebar.info("Xgboost(Extrem Gradient Boosting) accuracy error")
 st.sidebar.write('👍Accuracy:',np.round(accuracy_score(y_test,previsor_svc),2)*100,'%')
 st.sidebar.write('👎Error:',100-np.round(accuracy_score(y_test,previsor_svc),2)*100,'%')
 st.sidebar.header("🌐Data legend")
 st.sidebar.success('1 🌨️🌨️🌨️')
 st.sidebar.success('0 ⛅⛅⛅')
+st.sidebar.write('Made with 💗 by  ☎️ Contact',url)
+st.sidebar.info('GOMYCODE SN')
 
 #from xgboost import XGBClassifier
 #bst = XGBClassifier(n_estimators=2, max_depth=2, learning_rate=1, objective='binary:logistic')
