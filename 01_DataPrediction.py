@@ -2,7 +2,6 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 st.title("🌨️Data prediction⛅")
-# Voyons comment sont les données aprés encodage
 df= pd.read_csv('weather.csv')
 # Nous allons traiter les données manquents
 df['Sunshine'].fillna(0, inplace=True)
@@ -11,20 +10,14 @@ df['WindGustSpeed'].fillna(0, inplace=True)
 df['WindSpeed9am'].fillna(0, inplace=True)
 df['WindDir3pm'].fillna(0, inplace=True)
 df['WindDir9am'].fillna(0, inplace=True)
-
+# Nous allons supprimer les donnés inutiles 
 df.drop('RISK_MM', inplace=True,axis=1)
 df.drop('WindGustDir', inplace=True,axis=1)
 df.drop('WindDir9am', inplace=True,axis=1)
 df.drop('WindDir3pm', inplace=True,axis=1)
-
-# Nous utiliserons LabelEncoder pour gérer les étiquettes de nos principales prévisions
-from sklearn.preprocessing import LabelEncoder
-LE = LabelEncoder()
-df['RainToday'] = LE.fit_transform(df['RainToday'])
-df['RainTomorrow'] = LE.fit_transform(df['RainTomorrow'])
+df.drop('RainToday', inplace=True,axis=1)
 
 # separation des données 
-from sklearn.model_selection import train_test_split
 X = df.drop('RainTomorrow',axis=1).values
 y = df['RainTomorrow'].values
 
@@ -33,9 +26,9 @@ from sklearn.preprocessing import MinMaxScaler
 minmax = MinMaxScaler()
 X = minmax.fit_transform(X)
 
+from sklearn.model_selection import train_test_split
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=100)
-# Passons aux algorithmes prédicteurs svm et xgboost
-
+# Passons aux algorithmes prédicteurs svm
 from sklearn.svm import SVC
 from sklearn.metrics import accuracy_score
 model = SVC()
@@ -57,17 +50,16 @@ st.sidebar.info("Xgboost(Extrem Gradient Boosting) accuracy error")
 st.sidebar.write('👍Accuracy:',np.round(accuracy_score(y_test,previsor_svc),2)*100,'%')
 st.sidebar.write('👎Error:',100-np.round(accuracy_score(y_test,previsor_svc),2)*100,'%')
 st.sidebar.header("🌐Data legend")
-st.sidebar.success('1 🌨️🌨️🌨️')
-st.sidebar.success('0 ⛅⛅⛅')
+st.sidebar.success('Yes 🌨️🌨️🌨️')
+st.sidebar.success('No ⛅⛅⛅')
 st.sidebar.write('Made with 💗 by  ☎️ Contact',url)
 st.sidebar.info('GOMYCODE SN')
+
 # Fonction input user
-def user_input(MinTemp,MaxTemp,Rainfall,Evaporation,Sunshine,WindGustSpeed,WindSpeed9am,WindSpeed3pm,Humidity9am,Humidity3pm,Pressure9am,Pressure3pm,Cloud9am,Cloud3pm,Temp9am,Temp3pm,RainToday):
-    data = np.array([
-                     MinTemp,MaxTemp,Rainfall,Evaporation,Sunshine,WindGustSpeed,WindSpeed9am,
+def user_input(MinTemp,MaxTemp,Rainfall,Evaporation,Sunshine,WindGustSpeed,WindSpeed9am,WindSpeed3pm,Humidity9am,Humidity3pm,Pressure9am,Pressure3pm,Cloud9am,Cloud3pm,Temp9am,Temp3pm):
+    data = np.array([MinTemp,MaxTemp,Rainfall,Evaporation,Sunshine,WindGustSpeed,WindSpeed9am,
                      WindSpeed3pm,Humidity9am,Humidity3pm,Pressure9am,
-                     Pressure3pm,Cloud9am,Cloud3pm,Temp9am,Temp3pm,RainToday
-                     ])
+                     Pressure3pm,Cloud9am,Cloud3pm,Temp9am,Temp3pm])
     prediction_data = model.predict(data.reshape(1,-1))
     return prediction_data
 
@@ -89,13 +81,12 @@ Cloud9am = st.number_input('Cloud9am:',value=10)
 Cloud3pm = st.number_input('Cloud3pm:',value=10)
 Temp9am = st.number_input('Temp9am:',value=30)
 Temp3pm = st.number_input('Temp3pm:',value=30)
-RainToday = st.number_input('RainToday:',min_value=0,max_value=1)
 
 # creation du bouton de prediction 
 if st.button('▶️'):
     prediction = user_input(MinTemp,MaxTemp,Rainfall,Evaporation,Sunshine,WindGustSpeed,WindSpeed9am,
                             WindSpeed3pm,Humidity9am,Humidity3pm,Pressure9am,Pressure3pm,Cloud9am,Cloud3pm,
-                            Temp9am,Temp3pm,RainToday)
+                            Temp9am,Temp3pm)
     st.success(prediction)
 #Creation de bot
 st.title('🤖Chatbot🤖')
