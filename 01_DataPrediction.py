@@ -21,11 +21,6 @@ df.drop('RainToday', inplace=True,axis=1)
 X = df.drop('RainTomorrow',axis=1).values
 y = df['RainTomorrow'].values
 
-# standardiser nos informations, car elles sont à des échelles très différentes
-from sklearn.preprocessing import MinMaxScaler
-minmax = MinMaxScaler()
-X = minmax.fit_transform(X)
-
 from sklearn.model_selection import train_test_split
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=100)
 # Passons aux algorithmes prédicteurs svm
