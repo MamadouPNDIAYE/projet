@@ -1,6 +1,10 @@
 import streamlit as st 
 import pandas as pd
 import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.svm import SVC
+from sklearn.metrics import accuracy_score
+
 st.title("🌨️Data prediction⛅")
 df= pd.read_csv('weather.csv')
 # Nous allons traiter les données manquents
@@ -21,11 +25,9 @@ df.drop('RainToday', inplace=True,axis=1)
 X = df.drop('RainTomorrow',axis=1).values
 y = df['RainTomorrow'].values
 
-from sklearn.model_selection import train_test_split
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=100)
 # Passons aux algorithmes prédicteurs svm
-from sklearn.svm import SVC
-from sklearn.metrics import accuracy_score
+
 model = SVC()
 model.fit(X_train, y_train)
 previsor_svc = model.predict(X_test)
